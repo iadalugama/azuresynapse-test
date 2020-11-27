@@ -2,7 +2,7 @@
 	"name": "SQL selects scripts",
 	"properties": {
 		"content": {
-			"query": "\n\n\n  select count(TransactionId) from wwi_mcw.SaleSmall;\n\n  select * from wwi_mcw.CustomerInfo;\n\n\n  select count(Region) from wwi_mcw.CampaignAnalytics;\n",
+			"query": "\n\n\n  select count(TransactionId) from wwi_mcw.SaleSmall;\n\n  select * from wwi_mcw.CustomerInfo;\n\n  select count(Region) from wwi_mcw.CampaignAnalytics;\n",
 			"metadata": {
 				"language": "sql"
 			},
