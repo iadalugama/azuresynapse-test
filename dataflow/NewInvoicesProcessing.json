@@ -1,0 +1,35 @@
+{
+	"name": "NewInvoicesProcessing",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "InvoicesJson",
+						"type": "DatasetReference"
+					},
+					"name": "jsonInvoice"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "InvoiceTable",
+						"type": "DatasetReference"
+					},
+					"name": "SQLDatabase"
+				}
+			],
+			"transformations": [
+				{
+					"name": "RemoveCharFromStrings"
+				},
+				{
+					"name": "AlterTransactionID"
+				}
+			],
+			"script": "source(output(\n\t\tcustomerid as string,\n\t\tfilename as string,\n\t\tproductid as string,\n\t\tproductprice as string,\n\t\tquantity as string,\n\t\ttotalcharges as string,\n\t\ttransactionid as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine',\n\twildcardPaths:['*/*']) ~> jsonInvoice\njsonInvoice derive(productprice = toDecimal(replace(productprice,'$','')),\n\t\ttotalcharges = toDecimal(replace(replace(totalcharges,'$',''),',','')),\n\t\tquantity = toInteger(replace(quantity,',',''))) ~> RemoveCharFromStrings\nRemoveCharFromStrings alterRow(upsertIf(notEquals(transactionid,\"\"))) ~> AlterTransactionID\nAlterTransactionID sink(input(\n\t\tTransactionId as string,\n\t\tCustomerId as integer,\n\t\tProductId as integer,\n\t\tQuantity as integer,\n\t\tPrice as decimal(9,2),\n\t\tTotalAmount as decimal(9,2)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:['transactionid'],\n\tformat: 'table',\n\tstaged: true,\n\tmapColumn(\n\t\tTransactionId = transactionid,\n\t\tCustomerId = customerid,\n\t\tProductId = productid,\n\t\tQuantity = quantity,\n\t\tPrice = productprice,\n\t\tTotalAmount = totalcharges\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SQLDatabase"
+		}
+	}
+}

@@ -1,0 +1,43 @@
+{
+	"name": "InvoicesJson",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "asastore198085",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "invoices-json"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"customerid": {
+					"type": "string"
+				},
+				"filename": {
+					"type": "string"
+				},
+				"productid": {
+					"type": "string"
+				},
+				"productprice": {
+					"type": "string"
+				},
+				"quantity": {
+					"type": "string"
+				},
+				"totalcharges": {
+					"type": "string"
+				},
+				"transactionid": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
