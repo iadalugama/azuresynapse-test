@@ -1,0 +1,16 @@
+{
+	"name": "CREATE-TABLE-wwi_mcw-Invoices",
+	"properties": {
+		"content": {
+			"query": "  CREATE TABLE [wwi_mcw].[Invoices]\n  (\n    [TransactionId] [uniqueidentifier]  NOT NULL,\n    [CustomerId] [int]  NOT NULL,\n    [ProductId] [smallint]  NOT NULL,\n    [Quantity] [tinyint]  NOT NULL,\n    [Price] [decimal](9,2)  NOT NULL,\n    [TotalAmount] [decimal](9,2)  NOT NULL\n  );",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"name": "SQLPool01",
+				"type": "SqlPool"
+			}
+		},
+		"type": "SqlQuery"
+	}
+}
